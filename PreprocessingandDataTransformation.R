@@ -23,3 +23,12 @@ head(forest_fire_data)
 
 # View the dataset in a separate viewer window
 View(forest_fire_data)
+
+# Check for missing values
+missing_values <- sum(is.na(forest_fire_data))
+
+# Display summary of missing values
+print(paste("Number of missing values:", missing_values))
+
+# Summary of missing values by column
+print(summary(is.na(forest_fire_data)))
