@@ -53,3 +53,22 @@ print("Measures of Central Tendency for humidity:")
 print(paste("Mean:", RH_mean))
 print(paste("Median:", RH_median))
 print(paste("Mode:", RH_mode))
+
+# Measures of Distribution
+# Range, Variance, and Standard Deviation for temperature
+temp_range <- range(forest_fire_data$temp)
+temp_variance <- var(forest_fire_data$temp)
+temp_sd <- sd(forest_fire_data$temp)
+print("Measures of Distribution for temperature:")
+print(paste("Range:", temp_range[2] - temp_range[1]))
+print(paste("Variance:", temp_variance))
+print(paste("Standard Deviation:", temp_sd))
+
+# Range, Variance, and Standard Deviation for humidity
+RH_range <- range(forest_fire_data$RH)
+RH_variance <- var(forest_fire_data$RH)
+RH_sd <- sd(forest_fire_data$RH)
+print("Measures of Distribution for humidity:")
+print(paste("Range:", RH_range[2] - RH_range[1]))
+print(paste("Variance:", RH_variance))
+print(paste("Standard Deviation:", RH_sd))
