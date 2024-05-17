@@ -37,3 +37,25 @@ print("Dimensions of Training Data:")
 print(dim(train_data))
 print("Dimensions of Testing Data:")
 print(dim(test_data))
+
+# Bootstrapping
+bootstrap_samples <- lapply(1:1000, function(i) {
+  bootstrap_index <- sample(1:nrow(forest_fire_data), replace = TRUE)
+  bootstrap_data <- forest_fire_data[bootstrap_index, ]
+})
+
+# Calculate mean and median for each bootstrap sample
+bootstrap_stats <- sapply(bootstrap_samples, function(sample_data) {
+  mean_value <- mean(sample_data$area)
+  median_value <- median(sample_data$area)
+  return(c(mean_value, median_value))
+})
+
+# Calculate confidence intervals for mean and median
+confidence_intervals <- t(sapply(bootstrap_stats, function(stat) {
+  quantile(stat, c(0.025, 0.975))
+}))
+
+# Print confidence intervals
+print("Confidence intervals for mean and median:")
+print(confidence_intervals)
