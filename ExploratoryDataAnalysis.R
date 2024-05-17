@@ -72,3 +72,14 @@ print("Measures of Distribution for humidity:")
 print(paste("Range:", RH_range[2] - RH_range[1]))
 print(paste("Variance:", RH_variance))
 print(paste("Standard Deviation:", RH_sd))
+
+# Measures of Relationship
+# Correlation between temperature and humidity
+temp_RH_correlation <- cor(forest_fire_data$temp, forest_fire_data$RH)
+print("Correlation between temperature and humidity:")
+print(temp_RH_correlation)
+
+# Correlation between temperature and area
+temp_area_correlation <- cor(forest_fire_data$temp, forest_fire_data$area)
+print("Correlation between temperature and area:")
+print(temp_area_correlation)
