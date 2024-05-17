@@ -59,3 +59,38 @@ confidence_intervals <- t(sapply(bootstrap_stats, function(stat) {
 # Print confidence intervals
 print("Confidence intervals for mean and median:")
 print(confidence_intervals)
+
+# Remove the "month" column from the dataset
+forest_fire_data <- forest_fire_data[, !(names(forest_fire_data) %in% c("month", "day"))]
+
+# Cross-validation with evaluation using MAD and RMSE after removing the "month" column
+library(caret)
+set.seed(123) # Set seed for reproducibility
+folds <- createFolds(forest_fire_data$area, k = 10) # 10-fold cross-validation
+
+# Placeholder for storing evaluation results
+evaluation_results <- list()
+
+for (fold in 1:length(folds)) {
+  train_index <- unlist(folds[-fold])
+  test_index <- unlist(folds[fold])
+  train_data <- forest_fire_data[train_index, ]
+  test_data <- forest_fire_data[test_index, ]
+  
+  # Perform model training (replace this with your model training code)
+  model <- lm(area ~ ., data = train_data)
+  
+  # Make predictions
+  predictions <- predict(model, newdata = test_data)
+  
+  # Evaluate model performance
+  MAD <- mean(abs(test_data$area - predictions))
+  RMSE <- sqrt(mean((test_data$area - predictions)^2))
+  
+  # Store evaluation results
+  evaluation_results[[paste("Fold", fold)]] <- c(MAD = MAD, RMSE = RMSE)
+}
+
+# Print evaluation results
+print("Evaluation results for each fold:")
+print(do.call(rbind, evaluation_results))
