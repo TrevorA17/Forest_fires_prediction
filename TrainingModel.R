@@ -91,6 +91,56 @@ for (fold in 1:length(folds)) {
   evaluation_results[[paste("Fold", fold)]] <- c(MAD = MAD, RMSE = RMSE)
 }
 
+# Load required libraries
+library(caret)
+library(xgboost)
+
+# Define training control
+ctrl <- trainControl(method = "cv",  # Use cross-validation
+                     number = 10)    # Number of folds
+
+# Define models
+models <- c("lm", "glm", "xgbLinear")
+
+# Train and evaluate each model
+results <- lapply(models, function(model) {
+  set.seed(123)  # Set seed for reproducibility
+  
+  # Define formula for regression
+  formula <- as.formula(paste("area ~ ."))
+  
+  # Train model
+  if (model == "xgbLinear") {
+    # For xgbLinear, convert data to DMatrix format
+    dtrain <- xgb.DMatrix(data = as.matrix(forest_fire_data[, -which(names(forest_fire_data) == "area")]), label = forest_fire_data$area)
+    fit <- xgboost(data = dtrain, objective = "reg:linear", booster = "gblinear", nrounds = 10, verbose = FALSE)
+  } else {
+    fit <- train(formula, 
+                 data = forest_fire_data, 
+                 method = model,
+                 trControl = ctrl)
+  }
+  
+  # Make predictions
+  if (model == "xgbLinear") {
+    predictions <- predict(fit, newdata = as.matrix(forest_fire_data[, -which(names(forest_fire_data) == "area")]))
+  } else {
+    predictions <- predict(fit, newdata = forest_fire_data)
+  }
+  
+  # Compute evaluation metrics (e.g., RMSE, MAD)
+  accuracy <- sqrt(mean((forest_fire_data$area - predictions)^2))
+  mad <- mean(abs(forest_fire_data$area - predictions))
+  
+  # Return model and evaluation metrics
+  return(list(model = model, RMSE = accuracy, MAD = mad))
+})
+
+# Print results
+print("Model performance:")
+print(do.call(rbind, results))
+
+
 # Print evaluation results
 print("Evaluation results for each fold:")
 print(do.call(rbind, evaluation_results))
