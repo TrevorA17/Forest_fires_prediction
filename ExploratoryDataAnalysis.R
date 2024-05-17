@@ -83,3 +83,24 @@ print(temp_RH_correlation)
 temp_area_correlation <- cor(forest_fire_data$temp, forest_fire_data$area)
 print("Correlation between temperature and area:")
 print(temp_area_correlation)
+
+# Perform ANOVA on temperature across different months
+anova_result <- aov(temp ~ month, data = forest_fire_data)
+
+# Print ANOVA summary
+print(summary(anova_result))
+
+# Univariate Plots
+# Histogram of temperature
+hist(forest_fire_data$temp, main = "Histogram of Temperature", xlab = "Temperature")
+
+# Bar plot of month
+barplot(table(forest_fire_data$month), main = "Bar Plot of Month", xlab = "Month", ylab = "Frequency", col = "skyblue")
+
+# Multivariate Plots
+# Scatter plot of temperature vs. humidity
+plot(forest_fire_data$temp, forest_fire_data$RH, main = "Scatter Plot of Temperature vs. Humidity", xlab = "Temperature", ylab = "Humidity", col = "blue")
+
+# Box plot of temperature across different months
+boxplot(temp ~ month, data = forest_fire_data, main = "Box Plot of Temperature Across Months", xlab = "Month", ylab = "Temperature", col = "lightgreen")
+
