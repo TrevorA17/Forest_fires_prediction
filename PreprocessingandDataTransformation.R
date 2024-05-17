@@ -32,3 +32,10 @@ print(paste("Number of missing values:", missing_values))
 
 # Summary of missing values by column
 print(summary(is.na(forest_fire_data)))
+
+# Transform "area" variable using ln(x + 1) function
+forest_fire_data$ln_area <- log(forest_fire_data$area + 1)
+
+# Display the structure of the dataset to verify the transformation
+str(forest_fire_data)
+
