@@ -34,3 +34,22 @@ print(month_freq)
 day_freq <- table(forest_fire_data$day)
 print("Frequency of occurrences for day:")
 print(day_freq)
+
+# Measures of Central Tendency
+# Mean, Median, and Mode for temperature
+temp_mean <- mean(forest_fire_data$temp)
+temp_median <- median(forest_fire_data$temp)
+temp_mode <- names(sort(table(forest_fire_data$temp), decreasing = TRUE))[1]
+print("Measures of Central Tendency for temperature:")
+print(paste("Mean:", temp_mean))
+print(paste("Median:", temp_median))
+print(paste("Mode:", temp_mode))
+
+# Mean, Median, and Mode for humidity
+RH_mean <- mean(forest_fire_data$RH)
+RH_median <- median(forest_fire_data$RH)
+RH_mode <- names(sort(table(forest_fire_data$RH), decreasing = TRUE))[1]
+print("Measures of Central Tendency for humidity:")
+print(paste("Mean:", RH_mean))
+print(paste("Median:", RH_median))
+print(paste("Mode:", RH_mode))
