@@ -26,8 +26,6 @@ loaded_forest_fire_xgb_linear_model <- readRDS("./models/forest_fire_xgb_linear_
 new_forest_fire_data <- data.frame(
   X = c(7, 7, 7),  # Example X values
   Y = c(5, 4, 4),  # Example Y values
-  month = c("mar", "oct", "oct"),  # Example month values
-  day = c("fri", "tue", "sat"),  # Example day values
   FFMC = c(86.2, 90.6, 90.6),  # Example FFMC values
   DMC = c(26.2, 35.4, 43.7),  # Example DMC values
   DC = c(94.3, 669.1, 686.9),  # Example DC values
@@ -43,6 +41,9 @@ new_data_matrix <- as.matrix(new_forest_fire_data[, -which(names(new_forest_fire
 
 # Use the loaded model to make predictions for new forest fire data
 predictions_xgb_loaded_model <- predict(loaded_forest_fire_xgb_linear_model, newdata = xgb.DMatrix(new_data_matrix))
+
+# Apply inverse of ln(x+1) transform
+predictions_xgb_loaded_model <- exp(predictions_xgb_loaded_model) - 1
 
 # Print predictions
 print(predictions_xgb_loaded_model)
